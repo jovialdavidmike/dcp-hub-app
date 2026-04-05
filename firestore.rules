@@ -1,0 +1,182 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isSuperAdmin() {
+      return isAuthenticated() && 
+        ((request.auth.token.email == "jovialdavidmike@gmail.com" && request.auth.token.email_verified == true) ||
+        (request.auth.token.email == "yomieliezer@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' || isSuperAdmin());
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidUser(data) {
+      return hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoURL', 'fcmToken', 'role', 'teams', 'bio', 'lastUsernameChange', 'createdAt', 'reputationScore', 'impactsReceived', 'commentsPosted']) &&
+             data.uid is string && data.uid.size() > 0 &&
+             data.email is string && data.email.size() > 0 &&
+             data.role in ['member', 'admin', 'banned'] &&
+             (!('displayName' in data) || data.displayName == null || (data.displayName is string && data.displayName.size() <= 100)) &&
+             (!('photoURL' in data) || data.photoURL == null || (data.photoURL is string && data.photoURL.size() <= 2000)) &&
+             (!('fcmToken' in data) || data.fcmToken == null || (data.fcmToken is string && data.fcmToken.size() <= 1000)) &&
+             (!('teams' in data) || data.teams == null || (data.teams is list && data.teams.size() <= 10)) &&
+             (!('bio' in data) || data.bio == null || (data.bio is string && data.bio.size() <= 150)) &&
+             (!('lastUsernameChange' in data) || data.lastUsernameChange == null || data.lastUsernameChange is string || data.lastUsernameChange is number) &&
+             (!('createdAt' in data) || data.createdAt == null || data.createdAt is timestamp || data.createdAt is string) &&
+             (!('reputationScore' in data) || data.reputationScore == null || data.reputationScore is number) &&
+             (!('impactsReceived' in data) || data.impactsReceived == null || data.impactsReceived is number) &&
+             (!('commentsPosted' in data) || data.commentsPosted == null || data.commentsPosted is number);
+    }
+
+    function isValidUpdate(data) {
+      return hasOnlyAllowedFields(['content', 'authorId', 'authorName', 'authorRank', 'imageUrl', 'videoUrl', 'likes', 'createdAt']) &&
+             data.content is string && data.content.size() > 0 && data.content.size() <= 5000 &&
+             data.authorId is string &&
+             (!('authorName' in data) || data.authorName == null || (data.authorName is string && data.authorName.size() <= 100)) &&
+             (!('authorRank' in data) || data.authorRank == null || (data.authorRank is string && data.authorRank.size() <= 50)) &&
+             (!('imageUrl' in data) || data.imageUrl == null || (data.imageUrl is string && data.imageUrl.size() <= 2000)) &&
+             (!('videoUrl' in data) || data.videoUrl == null || (data.videoUrl is string && data.videoUrl.size() <= 1000)) &&
+             (!('likes' in data) || data.likes == null || data.likes is list) &&
+             (!('createdAt' in data) || data.createdAt is timestamp || data.createdAt is string);
+    }
+
+    function isValidComment(data) {
+      return hasOnlyAllowedFields(['text', 'authorId', 'authorName', 'authorPhoto', 'authorRank', 'replyTo', 'createdAt']) &&
+             data.text is string && data.text.size() > 0 && data.text.size() <= 1000 &&
+             data.authorId is string && data.authorId == request.auth.uid &&
+             (!('authorName' in data) || data.authorName == null || data.authorName is string) &&
+             (!('authorPhoto' in data) || data.authorPhoto == null || data.authorPhoto is string) &&
+             (!('authorRank' in data) || data.authorRank == null || data.authorRank is string) &&
+             (!('replyTo' in data) || data.replyTo == null || data.replyTo is map) &&
+             (!('createdAt' in data) || data.createdAt is timestamp || data.createdAt is string);
+    }
+
+    function isLikeUpdate() {
+      let affectedKeys = request.resource.data.diff(resource.data).affectedKeys();
+      return affectedKeys.hasOnly(['likes']) && 
+             (
+               (request.resource.data.likes.size() == resource.data.likes.size() + 1 && request.auth.uid in request.resource.data.likes && !(request.auth.uid in resource.data.likes)) ||
+               (request.resource.data.likes.size() == resource.data.likes.size() - 1 && !(request.auth.uid in request.resource.data.likes) && request.auth.uid in resource.data.likes)
+             );
+    }
+
+    function isValidAd(data) {
+      return hasOnlyAllowedFields(['title', 'imageUrl', 'link', 'active', 'createdAt']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+             data.imageUrl is string && data.imageUrl.size() > 0 && data.imageUrl.size() <= 1000 &&
+             (!('link' in data) || data.link == null || (data.link is string && data.link.size() <= 1000)) &&
+             data.active is bool &&
+             (!('createdAt' in data) || data.createdAt == null || data.createdAt is timestamp || data.createdAt is string);
+    }
+
+    function isTeamMember(teamId) {
+      let userTeams = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.teams;
+      return userTeams != null && teamId in userTeams;
+    }
+
+    function isValidMessage(data) {
+      return hasOnlyAllowedFields(['text', 'senderId', 'senderName', 'senderPhoto', 'senderRank', 'teamId', 'likes', 'replyTo', 'createdAt']) &&
+             data.text is string && data.text.size() > 0 && data.text.size() <= 2000 &&
+             data.senderId is string && data.senderId == request.auth.uid &&
+             data.teamId is string &&
+             (!('senderName' in data) || data.senderName == null || data.senderName is string) &&
+             (!('senderPhoto' in data) || data.senderPhoto == null || data.senderPhoto is string) &&
+             (!('senderRank' in data) || data.senderRank == null || data.senderRank is string) &&
+             (!('likes' in data) || data.likes == null || data.likes is list) &&
+             (!('replyTo' in data) || data.replyTo == null || data.replyTo is map) &&
+             (!('createdAt' in data) || data.createdAt is timestamp || data.createdAt is string);
+    }
+
+    function isValidBroadcast(data) {
+      return hasOnlyAllowedFields(['message', 'createdBy', 'createdAt']) &&
+             data.message is string && data.message.size() > 0 && data.message.size() <= 1000 &&
+             data.createdBy is string && data.createdBy == request.auth.uid &&
+             (!('createdAt' in data) || data.createdAt is timestamp || data.createdAt is string);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() && isOwner(userId) && isValidUser(request.resource.data) && 
+                    ((request.resource.data.role == 'member') || isSuperAdmin());
+      allow update: if isAuthenticated() && isValidUser(request.resource.data) && 
+                    (
+                      isSuperAdmin() || 
+                      (isOwner(userId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['bio', 'displayName', 'lastUsernameChange', 'photoURL', 'fcmToken', 'commentsPosted'])) ||
+                      (!isOwner(userId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['impactsReceived']) && 
+                        (request.resource.data.impactsReceived == resource.data.get('impactsReceived', 0) + 1 || 
+                         request.resource.data.impactsReceived == resource.data.get('impactsReceived', 0) - 1))
+                    );
+    }
+
+    match /{path=**}/comments/{commentId} {
+      allow read: if isAuthenticated();
+    }
+
+    match /updates/{updateId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() && isValidUpdate(request.resource.data) && request.resource.data.authorId == request.auth.uid;
+      allow update: if (isAdmin() && isValidUpdate(request.resource.data)) || (isAuthenticated() && isLikeUpdate());
+      allow delete: if isAdmin();
+    }
+
+    match /updates/{updateId}/comments/{commentId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidComment(request.resource.data);
+      allow update, delete: if isAdmin() || (isAuthenticated() && request.auth.uid == resource.data.authorId);
+    }
+
+    match /ads/{adId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() && isValidAd(request.resource.data);
+      allow update: if isAdmin() && isValidAd(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /messages/{messageId} {
+      allow read: if isAuthenticated() && isTeamMember(resource.data.teamId);
+      allow create: if isAuthenticated() && isTeamMember(request.resource.data.teamId) && isValidMessage(request.resource.data);
+      allow update: if isAuthenticated() && isTeamMember(resource.data.teamId) && isLikeUpdate();
+      allow delete: if isAdmin();
+    }
+
+    match /broadcasts/{broadcastId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidBroadcast(request.resource.data);
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+    match /vault/{resourceId} {
+      allow read: if isAuthenticated();
+      allow write: if isSuperAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if isAuthenticated();
+      allow create, delete: if isSuperAdmin();
+      allow update: if isSuperAdmin() || 
+                    (isAuthenticated() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rsvps']));
+    }
+  }
+}

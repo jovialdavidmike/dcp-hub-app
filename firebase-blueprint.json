@@ -1,0 +1,115 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the platform",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "fcmToken": { "type": "string" },
+        "role": { "type": "string", "enum": ["member", "admin", "banned"] },
+        "teams": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "bio": { "type": "string", "maxLength": 150 },
+        "lastUsernameChange": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Update": {
+      "title": "Update",
+      "description": "A daily update posted by an admin",
+      "type": "object",
+      "properties": {
+        "content": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "likes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["content", "authorId", "createdAt"]
+    },
+    "Ad": {
+      "title": "Ad",
+      "description": "A sponsored ad banner",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "link": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "imageUrl", "active"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A chat message in a team room",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderPhoto": { "type": "string" },
+        "teamId": { "type": "string" },
+        "likes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "replyTo": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "name": { "type": "string" },
+            "text": { "type": "string" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["text", "senderId", "teamId", "createdAt"]
+    },
+    "Broadcast": {
+      "title": "Broadcast",
+      "description": "A push notification broadcast alert",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["message", "createdBy", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "/updates/{updateId}": {
+      "schema": { "$ref": "#/entities/Update" },
+      "description": "Daily updates"
+    },
+    "/ads/{adId}": {
+      "schema": { "$ref": "#/entities/Ad" },
+      "description": "Sponsored ads"
+    },
+    "/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Team chat messages"
+    },
+    "/broadcasts/{broadcastId}": {
+      "schema": { "$ref": "#/entities/Broadcast" },
+      "description": "Broadcast alerts for push notifications"
+    }
+  }
+}
