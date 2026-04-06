@@ -106,7 +106,14 @@ export default function Login() {
         </div>
 
         <button
-          onClick={signInWithGoogle}
+          onClick={async () => {
+            setError('');
+            try {
+              await signInWithGoogle();
+            } catch (err: any) {
+              setError(err.message || 'Google sign-in failed');
+            }
+          }}
           className="w-full bg-white text-black font-medium py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition-colors"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">

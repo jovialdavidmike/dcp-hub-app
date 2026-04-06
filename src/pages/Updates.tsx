@@ -33,7 +33,7 @@ interface Comment {
   createdAt: string;
 }
 
-const PostCard = ({ update, user, userData }: { update: Update, user: any, userData: any }) => {
+const PostCard = ({ update, user, userData }: { key?: React.Key, update: Update, user: any, userData: any }) => {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
