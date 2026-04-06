@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db, googleProvider } from '../firebase';
+import { User, onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth, db } from '../firebase';
 import { doc, setDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 
 export const SUPER_ADMINS = ['jovialdavidmike@gmail.com', 'yomieliezer@gmail.com'];
@@ -40,7 +40,6 @@ interface AuthContextType {
   isAdmin: boolean;
   showMasterAdminWelcome: boolean;
   setShowMasterAdminWelcome: (show: boolean) => void;
-  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -89,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           } else {
             const isAdmin = currentUser.email ? SUPER_ADMINS.includes(currentUser.email) : false;
             
-            if (currentUser.email === 'yomieliezer@gmail.com') {
+            if (isAdmin) {
               setShowMasterAdminWelcome(true);
             }
 
@@ -125,18 +124,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error: any) {
-      console.error("Error signing in with Google", error);
-      if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
-        throw new Error('Google sign-in was cancelled. Please try again or use email/password.');
-      }
-      throw error;
-    }
-  };
-
   const logout = async () => {
     try {
       await signOut(auth);
@@ -147,7 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, userData, loading, isSuperAdmin, isAdmin, showMasterAdminWelcome, setShowMasterAdminWelcome, signInWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, userData, loading, isSuperAdmin, isAdmin, showMasterAdminWelcome, setShowMasterAdminWelcome, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );
