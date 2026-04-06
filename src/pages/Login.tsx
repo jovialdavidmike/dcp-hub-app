@@ -26,7 +26,11 @@ export default function Login() {
         await signInWithEmailAndPassword(auth, email, password);
       }
     } catch (err: any) {
-      setError(err.message || 'Authentication failed');
+      if (err.code === 'auth/operation-not-allowed') {
+        setError('Email/Password sign-in is not enabled. Please enable it in your Firebase Console under Authentication > Sign-in method.');
+      } else {
+        setError(err.message || 'Authentication failed');
+      }
     }
   };
 
@@ -111,7 +115,13 @@ export default function Login() {
             try {
               await signInWithGoogle();
             } catch (err: any) {
-              setError(err.message || 'Google sign-in failed');
+              if (err.code === 'auth/operation-not-allowed') {
+                setError('Google sign-in is not enabled in the Firebase Console.');
+              } else if (err.message.includes('cancelled') || err.code === 'auth/popup-closed-by-user') {
+                setError('Sign-in popup was closed or blocked. If you are in the preview window, try opening the app in a new tab (top right icon).');
+              } else {
+                setError(err.message || 'Google sign-in failed');
+              }
             }
           }}
           className="w-full bg-white text-black font-medium py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition-colors"
