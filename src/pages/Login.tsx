@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
-import { Terminal, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Terminal, Mail, Lock, Eye, EyeOff, Hexagon } from 'lucide-react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -60,8 +60,8 @@ export default function Login() {
 
       <div className="z-10 w-full max-w-md space-y-8 bg-gray-900/50 p-8 rounded-2xl border border-gray-800 backdrop-blur-sm">
         <div className="text-center">
-          <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center">
-            <img src="/logo.png" alt="DC Prime Techub Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
+          <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center bg-gradient-to-br from-cyan-500/20 to-purple-600/20 rounded-2xl border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+            <Hexagon size={48} className="text-cyan-400" />
           </div>
           <h2 className="text-3xl font-bold tracking-tight">DC Prime Techub</h2>
           <p className="text-gray-400 mt-2 text-sm">Abuja's Premier Tech Community</p>

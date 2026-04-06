@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { Home, Users, Bell, User as UserIcon, Shield, X, Crown, Folder, Calendar, Bot } from 'lucide-react';
+import { Home, Users, Bell, User as UserIcon, Shield, X, Crown, Folder, Calendar, Bot, Hexagon } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Layout() {
@@ -41,7 +41,9 @@ export default function Layout() {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-cyan-900/30 p-4 flex justify-between items-center px-safe">
         <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-600/20 border border-cyan-500/30 flex items-center justify-center">
+            <Hexagon size={18} className="text-cyan-400" />
+          </div>
           <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             DC Prime Techub
           </h1>
