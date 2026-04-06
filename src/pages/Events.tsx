@@ -161,7 +161,7 @@ export default function Events() {
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-sm focus:border-cyan-500 focus:outline-none"
+                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-base focus:border-cyan-500 focus:outline-none"
                 required
               />
             </div>
@@ -172,7 +172,7 @@ export default function Events() {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-sm focus:border-cyan-500 focus:outline-none"
+                  className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-base focus:border-cyan-500 focus:outline-none"
                   required
                 />
               </div>
@@ -182,7 +182,7 @@ export default function Events() {
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-sm focus:border-cyan-500 focus:outline-none"
+                  className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-base focus:border-cyan-500 focus:outline-none"
                   required
                 />
               </div>
@@ -193,7 +193,7 @@ export default function Events() {
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-sm focus:border-cyan-500 focus:outline-none"
+                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-base focus:border-cyan-500 focus:outline-none"
                 required
               />
             </div>
@@ -203,7 +203,7 @@ export default function Events() {
                 type="url"
                 value={mapsLink}
                 onChange={(e) => setMapsLink(e.target.value)}
-                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-sm focus:border-cyan-500 focus:outline-none"
+                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-base focus:border-cyan-500 focus:outline-none"
                 required
               />
             </div>

@@ -140,7 +140,7 @@ export default function Vault() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-sm focus:border-cyan-500 focus:outline-none capitalize"
+                  className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-base focus:border-cyan-500 focus:outline-none capitalize"
                 >
                   {CATEGORIES.map(c => (
                     <option key={c} value={c}>{c.replace('-', ' ')}</option>
@@ -154,7 +154,7 @@ export default function Vault() {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-sm focus:border-cyan-500 focus:outline-none resize-none h-20"
+                className="w-full bg-black border border-gray-800 rounded-xl p-2.5 text-white text-base focus:border-cyan-500 focus:outline-none resize-none h-20"
                 required
               />
             </div>

@@ -131,7 +131,7 @@ export default function Chat() {
   const teamName = teamId?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
 
   return (
-    <div className="flex flex-col h-[calc(100vh-140px)]">
+    <div className="flex flex-col h-[calc(100dvh-140px)]">
       {/* Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-gray-800 mb-4">
         <button onClick={() => navigate('/teams')} className="p-2 hover:bg-gray-900 rounded-full text-gray-400 transition-colors">

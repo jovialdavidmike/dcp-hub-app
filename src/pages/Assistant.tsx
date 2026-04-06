@@ -69,7 +69,7 @@ export default function Assistant() {
     setIsLoading(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
       
       // Format history for the model
       const history = messages.map(msg => ({
@@ -126,7 +126,7 @@ export default function Assistant() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-140px)] max-h-[800px] bg-gray-900/50 rounded-2xl border-2 border-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.4)] overflow-hidden">
+    <div className="flex flex-col h-[calc(100dvh-140px)] max-h-[800px] bg-gray-900/50 rounded-2xl border-2 border-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.4)] overflow-hidden">
       <div className="p-4 bg-gray-900 border-b border-purple-500/50 flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-purple-900/50 flex items-center justify-center border border-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.5)]">
           <Bot className="text-purple-400" size={20} />
@@ -189,7 +189,7 @@ export default function Assistant() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask the Hub Assistant..."
-            className="flex-1 bg-black border border-gray-700 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+            className="flex-1 bg-black border border-gray-700 rounded-xl px-4 py-3 text-base text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
             disabled={isLoading}
           />
           <button

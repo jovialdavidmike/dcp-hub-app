@@ -139,7 +139,7 @@ export default function Profile() {
                   type="text" 
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="w-full bg-black border border-gray-700 rounded-lg p-2 text-white text-sm focus:border-cyan-500 focus:outline-none"
+                  className="w-full bg-black border border-gray-700 rounded-lg p-2 text-white text-base focus:border-cyan-500 focus:outline-none"
                   placeholder="Your username"
                 />
               </div>
@@ -148,7 +148,7 @@ export default function Profile() {
                 <textarea 
                   value={bio}
                   onChange={(e) => setBio(e.target.value.slice(0, 150))}
-                  className="w-full bg-black border border-gray-700 rounded-lg p-2 text-white text-sm focus:border-cyan-500 focus:outline-none resize-none h-20"
+                  className="w-full bg-black border border-gray-700 rounded-lg p-2 text-white text-base focus:border-cyan-500 focus:outline-none resize-none h-20"
                   placeholder="Tell us about yourself..."
                 />
                 <div className="text-right text-xs text-gray-500 mt-1">{bio.length}/150</div>

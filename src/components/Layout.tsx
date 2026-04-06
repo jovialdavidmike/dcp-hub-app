@@ -7,7 +7,7 @@ export default function Layout() {
   const { userData, isAdmin, showMasterAdminWelcome, setShowMasterAdminWelcome } = useAuth();
 
   return (
-    <div className="min-h-screen bg-black text-white pb-16">
+    <div className="min-h-[100dvh] bg-black text-white pb-16 pt-safe pl-safe pr-safe">
       {/* Master Admin Welcome Popup */}
       {showMasterAdminWelcome && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
@@ -39,7 +39,7 @@ export default function Layout() {
       )}
 
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-cyan-900/30 p-4 flex justify-between items-center">
+      <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-cyan-900/30 p-4 flex justify-between items-center px-safe">
         <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
           DC Prime Techub
         </h1>
@@ -51,12 +51,12 @@ export default function Layout() {
       </header>
 
       {/* Main Content */}
-      <main className="p-4 max-w-md mx-auto">
+      <main className="p-4 max-w-md mx-auto px-safe">
         <Outlet />
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-cyan-900/30 pb-safe z-40">
+      <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-cyan-900/30 pb-safe z-40 px-safe">
         <div className="flex justify-around items-center p-2 max-w-md mx-auto overflow-x-auto hide-scrollbar">
           <NavLink
             to="/"

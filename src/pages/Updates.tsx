@@ -297,7 +297,7 @@ const PostCard = ({ update, user, userData }: { key?: React.Key, update: Update,
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Share your insight..."
-                  className="flex-1 bg-black/50 border border-gray-700 rounded-xl py-2 px-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 resize-none min-h-[40px] max-h-24 custom-scrollbar"
+                  className="flex-1 bg-black/50 border border-gray-700 rounded-xl py-2 px-3 text-base text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 resize-none min-h-[40px] max-h-24 custom-scrollbar"
                   rows={1}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
