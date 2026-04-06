@@ -4,7 +4,8 @@ import { db, storage } from '../firebase';
 import { collection, addDoc, query, getDocs, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Navigate } from 'react-router-dom';
-import { Send, Image, Link as LinkIcon, Trash2, Users, Camera, Loader2, Radio, Youtube, Zap, ShieldAlert, Edit, Plus, X } from 'lucide-react';
+import { GoogleGenAI } from '@google/genai';
+import { Send, Image, Link as LinkIcon, Trash2, Users, Camera, Loader2, Radio, Youtube, Zap, ShieldAlert, Edit, Plus, X, Sparkles } from 'lucide-react';
 
 const AVAILABLE_TEAMS = ['robotics', 'ai', 'cybersecurity', 'web-dev'];
 
@@ -20,6 +21,7 @@ export default function AdminDashboard() {
   const [members, setMembers] = useState<any[]>([]);
   const [mostImpactful, setMostImpactful] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [generatingUpdate, setGeneratingUpdate] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -61,6 +63,26 @@ export default function AdminDashboard() {
       setMostImpactful(bestPost);
     } catch (error) {
       console.error("Error fetching most impactful post", error);
+    }
+  };
+
+  const handleGenerateUpdate = async () => {
+    setGeneratingUpdate(true);
+    try {
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: 'Generate a 3-sentence, high-energy tech update tailored for a Nigerian Techub (DC Prime Techub in Abuja).',
+      });
+      if (response.text) {
+        setUpdateContent(response.text);
+        showMessage('AI update generated successfully!', 'success');
+      }
+    } catch (error: any) {
+      console.error('Error generating update:', error);
+      showMessage(error.message || 'Error generating update', 'error');
+    } finally {
+      setGeneratingUpdate(false);
     }
   };
 
@@ -242,9 +264,20 @@ export default function AdminDashboard() {
 
       {/* Post Update */}
       <section className="bg-gray-900/60 p-5 rounded-2xl border border-purple-900/30">
-        <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-          <Send size={18} className="text-purple-400" /> Post Daily Update
-        </h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-medium text-white flex items-center gap-2">
+            <Send size={18} className="text-purple-400" /> Post Daily Update
+          </h3>
+          <button
+            type="button"
+            onClick={handleGenerateUpdate}
+            disabled={generatingUpdate}
+            className="flex items-center gap-2 px-3 py-1.5 bg-purple-900/40 hover:bg-purple-900/60 text-purple-300 rounded-lg transition-colors border border-purple-500/30 text-sm"
+          >
+            {generatingUpdate ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+            Draft Tech Update with AI
+          </button>
+        </div>
         <form onSubmit={handlePostUpdate} className="space-y-3">
           <textarea
             value={updateContent}

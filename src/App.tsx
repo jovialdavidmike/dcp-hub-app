@@ -16,6 +16,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import Chat from './pages/Chat';
 import Vault from './pages/Vault';
 import Events from './pages/Events';
+import Assistant from './pages/Assistant';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="updates" element={<Updates />} />
             <Route path="vault" element={<Vault />} />
             <Route path="events" element={<Events />} />
+            <Route path="assistant" element={<Assistant />} />
             <Route path="profile" element={<Profile />} />
             <Route path="admin" element={<AdminDashboard />} />
             <Route path="chat/:teamId" element={<Chat />} />

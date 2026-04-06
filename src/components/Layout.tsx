@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { Home, Users, Bell, User as UserIcon, Shield, X, Crown, Folder, Calendar } from 'lucide-react';
+import { Home, Users, Bell, User as UserIcon, Shield, X, Crown, Folder, Calendar, Bot } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Layout() {
@@ -57,11 +57,11 @@ export default function Layout() {
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-cyan-900/30 pb-safe z-40">
-        <div className="flex justify-around items-center p-2 max-w-md mx-auto">
+        <div className="flex justify-around items-center p-2 max-w-md mx-auto overflow-x-auto hide-scrollbar">
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `flex flex-col items-center p-2 ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
+              `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
             }
           >
             <Home size={20} />
@@ -70,7 +70,7 @@ export default function Layout() {
           <NavLink
             to="/teams"
             className={({ isActive }) =>
-              `flex flex-col items-center p-2 ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
+              `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
             }
           >
             <Users size={20} />
@@ -79,7 +79,7 @@ export default function Layout() {
           <NavLink
             to="/updates"
             className={({ isActive }) =>
-              `flex flex-col items-center p-2 ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
+              `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
             }
           >
             <Bell size={20} />
@@ -88,7 +88,7 @@ export default function Layout() {
           <NavLink
             to="/vault"
             className={({ isActive }) =>
-              `flex flex-col items-center p-2 ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
+              `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
             }
           >
             <Folder size={20} />
@@ -97,16 +97,25 @@ export default function Layout() {
           <NavLink
             to="/events"
             className={({ isActive }) =>
-              `flex flex-col items-center p-2 ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
+              `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
             }
           >
             <Calendar size={20} />
             <span className="text-[10px] mt-1">Events</span>
           </NavLink>
           <NavLink
+            to="/assistant"
+            className={({ isActive }) =>
+              `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-purple-400' : 'text-gray-500 hover:text-purple-300'}`
+            }
+          >
+            <Bot size={20} />
+            <span className="text-[10px] mt-1">Assistant</span>
+          </NavLink>
+          <NavLink
             to="/profile"
             className={({ isActive }) =>
-              `flex flex-col items-center p-2 ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
+              `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`
             }
           >
             <UserIcon size={20} />
@@ -116,7 +125,7 @@ export default function Layout() {
             <NavLink
               to="/admin"
               className={({ isActive }) =>
-                `flex flex-col items-center p-2 ${isActive ? 'text-purple-400' : 'text-gray-500 hover:text-gray-300'}`
+                `flex flex-col items-center p-2 min-w-[48px] ${isActive ? 'text-purple-400' : 'text-gray-500 hover:text-gray-300'}`
               }
             >
               <Shield size={20} />
