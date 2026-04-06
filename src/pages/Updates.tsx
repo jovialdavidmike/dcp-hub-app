@@ -147,8 +147,8 @@ const PostCard = ({ update, user, userData }: { key?: React.Key, update: Update,
   const embedUrl = getYouTubeEmbedUrl(update.videoUrl);
 
   return (
-    <div className="bg-gray-900/40 backdrop-blur-md rounded-2xl border border-white/10 relative overflow-hidden flex flex-col transition-transform duration-300 hover:-translate-y-1 shadow-lg">
-      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-500 to-purple-500 z-10"></div>
+    <div className="bg-gray-900/40 backdrop-blur-md rounded-3xl border border-white/10 relative overflow-hidden flex flex-col transition-transform duration-300 hover:-translate-y-1 shadow-xl">
+      <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-cyan-500 to-purple-500 z-10"></div>
       
       {/* Media Section */}
       {embedUrl ? (
@@ -171,19 +171,19 @@ const PostCard = ({ update, user, userData }: { key?: React.Key, update: Update,
         </div>
       ) : null}
       
-      <div className="p-5 flex-1 flex flex-col">
+      <div className="p-6 flex-1 flex flex-col">
         {/* Author & Time */}
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-purple-900/50 flex items-center justify-center text-sm font-bold text-purple-300 border border-purple-500/30">
+        <div className="flex justify-between items-start mb-5">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-purple-900/50 flex items-center justify-center text-base font-bold text-purple-300 border border-purple-500/30">
               {update.authorName?.charAt(0) || 'A'}
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="block text-sm font-bold text-gray-200">{update.authorName || 'Admin'}</span>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="block text-base font-bold text-gray-200">{update.authorName || 'Admin'}</span>
                 <RankBadge rank={update.authorRank || 'Tech Apprentice'} />
               </div>
-              <span className="block text-[10px] text-gray-500">
+              <span className="block text-xs text-gray-500">
                 {new Date(update.createdAt).toLocaleString(undefined, {
                   month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
                 })}
@@ -193,12 +193,12 @@ const PostCard = ({ update, user, userData }: { key?: React.Key, update: Update,
         </div>
         
         {/* Content */}
-        <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap mb-5 flex-1 font-sans">
+        <p className="text-gray-300 text-base leading-relaxed whitespace-pre-wrap mb-6 flex-1 font-sans">
           {update.content}
         </p>
 
         {/* Engagement Bar */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-800/50 mt-auto">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-800/50 mt-auto">
           <div className="flex items-center gap-4">
             <button 
               onClick={toggleLike}
@@ -346,25 +346,25 @@ export default function Updates() {
   }, []);
 
   return (
-    <div className="space-y-6 pb-10">
-      <div className="mb-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
-          <Activity className="text-cyan-400" size={20} />
+    <div className="space-y-8 pb-12">
+      <div className="mb-8 flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+          <Activity className="text-cyan-400" size={24} />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">Social Pulse</h2>
-          <p className="text-gray-400 text-sm">Real-time updates and community insights.</p>
+          <h2 className="text-3xl font-bold text-white tracking-tight">Social Pulse</h2>
+          <p className="text-gray-400 text-base mt-1">Real-time updates and community insights.</p>
         </div>
       </div>
 
       {loading ? (
-        <div className="text-center py-10 text-gray-500">Loading pulse...</div>
+        <div className="text-center py-12 text-gray-500 text-lg">Loading pulse...</div>
       ) : updates.length === 0 ? (
-        <div className="text-center py-10 text-gray-500 bg-gray-900/30 rounded-xl border border-gray-800">
+        <div className="text-center py-12 text-gray-500 text-lg bg-gray-900/30 rounded-2xl border border-gray-800">
           No activity yet.
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {updates.map(update => (
             <PostCard key={update.id} update={update} user={user} userData={userData} />
           ))}

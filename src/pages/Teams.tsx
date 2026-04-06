@@ -43,13 +43,13 @@ export default function Teams() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white">Hub Teams</h2>
-        <p className="text-gray-400 text-sm mt-1">Join specialized teams to collaborate and learn.</p>
+    <div className="space-y-8 pb-12">
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-white tracking-tight">Hub Teams</h2>
+        <p className="text-gray-400 text-base mt-2">Join specialized teams to collaborate and learn.</p>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-5">
         {TEAMS.map((team) => {
           const Icon = team.icon;
           const isMember = userData?.teams?.includes(team.id);
@@ -58,16 +58,16 @@ export default function Teams() {
             <div 
               key={team.id} 
               onClick={() => isMember && navigate(`/chat/${team.id}`)}
-              className={`p-4 rounded-2xl border ${team.border} bg-gray-900/50 flex items-center justify-between transition-all ${isMember ? 'ring-1 ring-white/20 cursor-pointer hover:bg-gray-800/50' : ''}`}
+              className={`p-5 rounded-3xl border ${team.border} bg-gray-900/50 flex items-center justify-between transition-all shadow-sm ${isMember ? 'ring-1 ring-white/20 cursor-pointer hover:bg-gray-800/50' : ''}`}
             >
-              <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl ${team.bg} flex items-center justify-center`}>
-                  <Icon className={team.color} size={24} />
+              <div className="flex items-center gap-5">
+                <div className={`w-14 h-14 rounded-2xl ${team.bg} flex items-center justify-center`}>
+                  <Icon className={team.color} size={28} />
                 </div>
                 <div>
-                  <h3 className="font-medium text-white">{team.name}</h3>
-                  <p className="text-xs text-gray-500 flex items-center gap-1">
-                    {isMember ? <><MessageSquare size={12} className="text-cyan-400" /> Tap to open chat</> : 'Tap Join to access chat'}
+                  <h3 className="font-bold text-white text-lg">{team.name}</h3>
+                  <p className="text-sm text-gray-500 flex items-center gap-1.5 mt-1">
+                    {isMember ? <><MessageSquare size={14} className="text-cyan-400" /> Tap to open chat</> : 'Tap Join to access chat'}
                   </p>
                 </div>
               </div>
@@ -75,7 +75,7 @@ export default function Teams() {
               <button
                 onClick={(e) => toggleTeam(team.id, e)}
                 disabled={loadingId === team.id}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-colors ${
                   isMember 
                     ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' 
                     : 'bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30 border border-cyan-500/30'
@@ -89,22 +89,22 @@ export default function Teams() {
       </div>
 
       {/* Platform Credits */}
-      <div className="mt-10 pt-6 border-t border-gray-800">
-        <h3 className="text-lg font-bold text-white mb-4">Platform Leadership</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-gray-900/40 p-4 rounded-xl border border-gray-800 flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center mb-2">
-              <span className="text-cyan-400 font-bold text-lg">E</span>
+      <div className="mt-12 pt-8 border-t border-gray-800/50">
+        <h3 className="text-xl font-bold text-white mb-6">Platform Leadership</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="bg-gray-900/40 p-6 rounded-3xl border border-gray-800 flex flex-col items-center text-center shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center mb-3">
+              <span className="text-cyan-400 font-bold text-2xl">E</span>
             </div>
-            <p className="text-white font-bold">Eli</p>
-            <p className="text-xs text-cyan-400">Community Founder</p>
+            <p className="text-white font-bold text-lg">Eli</p>
+            <p className="text-sm text-cyan-400 mt-1">Community Founder</p>
           </div>
-          <div className="bg-gray-900/40 p-4 rounded-xl border border-gray-800 flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center mb-2">
-              <span className="text-purple-400 font-bold text-lg">DM</span>
+          <div className="bg-gray-900/40 p-6 rounded-3xl border border-gray-800 flex flex-col items-center text-center shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center mb-3">
+              <span className="text-purple-400 font-bold text-2xl">DM</span>
             </div>
-            <p className="text-white font-bold">David Mike</p>
-            <p className="text-xs text-purple-400">Lead Developer & Architect</p>
+            <p className="text-white font-bold text-lg">David Mike</p>
+            <p className="text-sm text-purple-400 mt-1">Lead Developer & Architect</p>
           </div>
         </div>
       </div>
