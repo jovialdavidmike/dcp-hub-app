@@ -40,9 +40,12 @@ export default function Layout() {
 
       {/* Header */}
       <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-cyan-900/30 p-4 flex justify-between items-center px-safe">
-        <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-          DC Prime Techub
-        </h1>
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
+          <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            DC Prime Techub
+          </h1>
+        </div>
         {isAdmin && (
           <span className="px-2 py-1 bg-purple-900/50 text-purple-300 text-xs rounded-full border border-purple-500/30 flex items-center gap-1">
             <Shield size={12} /> Admin

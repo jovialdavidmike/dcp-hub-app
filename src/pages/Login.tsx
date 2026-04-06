@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { Terminal, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 
 export default function Login() {
@@ -12,6 +12,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   if (user) {
     return <Navigate to="/" replace />;
@@ -21,10 +22,11 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
+      const trimmedEmail = email.trim();
       if (isSignUp) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        await createUserWithEmailAndPassword(auth, trimmedEmail, password);
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth, trimmedEmail, password);
       }
     } catch (err: any) {
       if (err.code === 'auth/operation-not-allowed') {
@@ -32,6 +34,21 @@ export default function Login() {
       } else {
         setError(err.message || 'Authentication failed');
       }
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      setError('Please enter your email address first.');
+      return;
+    }
+    try {
+      setError('');
+      setMessage('');
+      await sendPasswordResetEmail(auth, email.trim());
+      setMessage('Password reset email sent! Check your inbox.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to send reset email.');
     }
   };
 
@@ -43,8 +60,8 @@ export default function Login() {
 
       <div className="z-10 w-full max-w-md space-y-8 bg-gray-900/50 p-8 rounded-2xl border border-gray-800 backdrop-blur-sm">
         <div className="text-center">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(6,182,212,0.3)]">
-            <Terminal size={32} className="text-black" />
+          <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center">
+            <img src="/logo.png" alt="DC Prime Techub Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
           </div>
           <h2 className="text-3xl font-bold tracking-tight">DC Prime Techub</h2>
           <p className="text-gray-400 mt-2 text-sm">Abuja's Premier Tech Community</p>
@@ -53,6 +70,11 @@ export default function Login() {
         {error && (
           <div className="bg-red-900/50 border border-red-500/50 text-red-200 p-3 rounded-lg text-sm text-center">
             {error}
+          </div>
+        )}
+        {message && (
+          <div className="bg-green-900/50 border border-green-500/50 text-green-200 p-3 rounded-lg text-sm text-center">
+            {message}
           </div>
         )}
 
@@ -89,6 +111,17 @@ export default function Login() {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
+            {!isSignUp && (
+              <div className="flex justify-end mt-2">
+                <button
+                  type="button"
+                  onClick={handleResetPassword}
+                  className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
+                >
+                  Forgot password?
+                </button>
+              </div>
+            )}
           </div>
           <button
             type="submit"
