@@ -166,4 +166,4 @@ This platform isn't just code — it's a **movement to connect Africa's next gen
 
 *Built with ❤️ for Abuja's tech ecosystem. Scaling next.*
 
-**[Live Demo](https://ai.studio/apps/ebcdba2f-b77c-4828-81c8-b275ab203924)** | **[Report an Issue](https://github.com/your-repo/issues)** | **[Contact Founder](mailto:your-email@example.com)**
+**[Live Demo](https://ai.studio/apps/ebcdba2f-b77c-4828-81c8-b275ab203924)** | **[Report an Issue](https://github.com/jovialdavidmike/dcp-hub-app/issues)** | **[Contact Founder](mailto:jovialdavidmike@gmail.com)**
