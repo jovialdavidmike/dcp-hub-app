@@ -4,7 +4,7 @@
 
 ---
 
-## 👋 Hey Evaluators & Potential Partners
+## 👋 Hey Potential Partners
 
 Welcome to **DC Prime Techub** — a centralized, real-time community platform designed to connect, collaborate, and elevate Abuja's fastest-growing tech ecosystem.
 
